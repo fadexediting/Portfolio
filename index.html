@@ -1,0 +1,617 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Fadex — Video Editor</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#0A0A0A;--s1:#111111;--s2:#181818;--s3:#1E1E1E;
+  --teal:#2ECFCF;--teal-lo:rgba(46,207,207,0.08);--teal-mid:rgba(46,207,207,0.15);
+  --white:#F0F0F0;--muted:#777;--border:#1F1F1F;
+}
+html{scroll-behavior:smooth}
+body{background:var(--bg);color:var(--white);font-family:'Inter',sans-serif;overflow-x:hidden}
+a{text-decoration:none;color:inherit}
+
+/* ── NAV ── */
+.nav{position:fixed;top:0;left:0;right:0;z-index:200;height:58px;
+  background:rgba(10,10,10,0.94);backdrop-filter:blur(16px);
+  border-bottom:1px solid var(--border);
+  display:flex;align-items:center;justify-content:space-between;
+  padding:0 60px}
+.nav-logo{font-size:17px;font-weight:800;color:var(--teal);letter-spacing:3px}
+.nav-links{display:flex;gap:32px;list-style:none}
+.nav-links a{font-size:11px;font-weight:500;letter-spacing:1.5px;text-transform:uppercase;
+  color:var(--muted);transition:color .2s}
+.nav-links a:hover{color:var(--teal)}
+.nav-hire{background:var(--teal);color:#0A0A0A;font-size:11px;font-weight:700;
+  letter-spacing:1.5px;text-transform:uppercase;padding:9px 22px;border-radius:6px;
+  transition:opacity .2s}
+.nav-hire:hover{opacity:.8}
+
+/* ── HERO ── */
+.hero{min-height:100vh;display:flex;flex-direction:column;align-items:center;
+  justify-content:center;text-align:center;padding:100px 60px 80px;position:relative}
+.hero-chip{display:inline-flex;align-items:center;gap:8px;background:var(--teal-mid);
+  border:1px solid rgba(46,207,207,0.3);border-radius:100px;
+  padding:6px 16px;font-size:11px;font-weight:600;letter-spacing:2px;
+  text-transform:uppercase;color:var(--teal);margin-bottom:28px}
+.hero-chip-dot{width:6px;height:6px;background:var(--teal);border-radius:50%;animation:pulse 2s infinite}
+@keyframes pulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.5;transform:scale(1.3)}}
+.hero-h1{font-size:clamp(56px,8vw,96px);font-weight:900;line-height:.95;
+  letter-spacing:-3px;margin-bottom:24px}
+.hero-h1 .teal{color:var(--teal)}
+.hero-h1 .dim{color:var(--muted);font-weight:300}
+.hero-sub{font-size:clamp(14px,1.5vw,17px);color:var(--muted);line-height:1.7;
+  max-width:500px;margin:0 auto 40px}
+.hero-btns{display:flex;gap:12px;justify-content:center;flex-wrap:wrap}
+.btn-p{background:var(--teal);color:#0A0A0A;font-weight:700;font-size:12px;
+  letter-spacing:1.5px;text-transform:uppercase;padding:14px 32px;
+  border-radius:8px;transition:opacity .2s}
+.btn-p:hover{opacity:.8}
+.btn-s{border:1px solid var(--border);color:var(--muted);font-size:12px;
+  font-weight:500;padding:14px 32px;border-radius:8px;transition:all .2s}
+.btn-s:hover{border-color:var(--teal);color:var(--teal)}
+.hero-stats{display:flex;gap:0;margin-top:64px;border:1px solid var(--border);
+  border-radius:14px;background:var(--s1);overflow:hidden;max-width:500px}
+.stat{flex:1;padding:22px 28px;text-align:center;border-right:1px solid var(--border)}
+.stat:last-child{border-right:none}
+.stat-n{font-size:28px;font-weight:800;color:var(--teal)}
+.stat-l{font-size:10px;letter-spacing:1.5px;text-transform:uppercase;color:var(--muted);margin-top:4px}
+
+/* ── LAYOUT ── */
+.wrap{max-width:1300px;margin:0 auto;padding:0 60px}
+section{padding:90px 0}
+
+/* ── ABOUT ── */
+.eyebrow{font-size:10px;font-weight:600;letter-spacing:3px;text-transform:uppercase;
+  color:var(--teal);margin-bottom:16px}
+.section-h{font-size:clamp(30px,3.5vw,44px);font-weight:800;letter-spacing:-1.5px;
+  line-height:1.1;margin-bottom:24px}
+.about-grid{display:grid;grid-template-columns:1.1fr 0.9fr;gap:80px;align-items:start}
+.about-p{font-size:14px;line-height:1.85;color:var(--muted);margin-bottom:14px}
+.about-p strong{color:var(--white)}
+.about-note{margin-top:22px;padding:14px 18px;background:var(--s1);
+  border-left:3px solid var(--teal);border-radius:0 8px 8px 0;
+  font-size:12px;color:var(--muted);font-style:italic;line-height:1.6}
+.socials{display:flex;gap:10px;margin-top:28px;flex-wrap:wrap}
+.social-pill{display:flex;align-items:center;gap:8px;background:var(--s2);
+  border:1px solid var(--border);color:var(--muted);font-size:12px;font-weight:500;
+  padding:9px 16px;border-radius:8px;transition:all .2s}
+.social-pill:hover{border-color:var(--teal);color:var(--teal)}
+.social-pill svg{width:14px;height:14px;fill:currentColor;flex-shrink:0}
+.about-cards{display:flex;flex-direction:column;gap:14px}
+.about-card{background:var(--s1);border:1px solid var(--border);border-radius:14px;
+  padding:22px;display:flex;gap:16px;align-items:flex-start;transition:border-color .2s}
+.about-card:hover{border-color:rgba(46,207,207,.3)}
+.acard-icon{width:42px;height:42px;background:var(--teal-lo);border-radius:10px;
+  display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0}
+.acard-h{font-size:13px;font-weight:600;color:var(--white);margin-bottom:3px}
+.acard-p{font-size:12px;color:var(--muted);line-height:1.5}
+
+/* ── WORK ── */
+.work-bg{background:var(--s1)}
+.vsection{margin-bottom:48px}
+.vsection-header{display:flex;align-items:center;gap:14px;margin-bottom:20px}
+.vsection-tag{background:var(--teal-mid);border:1px solid rgba(46,207,207,.25);
+  color:var(--teal);font-size:10px;font-weight:700;letter-spacing:2px;
+  text-transform:uppercase;padding:5px 12px;border-radius:100px}
+.vsection-title{font-size:16px;font-weight:700}
+.vsection-line{flex:1;height:1px;background:var(--border)}
+.vgrid{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}
+.vcard{border-radius:12px;overflow:hidden;background:var(--s2);position:relative;
+  aspect-ratio:16/9;cursor:pointer}
+.vcard-thumb{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;
+  transition:opacity .3s;z-index:1}
+.vcard-play{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);
+  width:52px;height:52px;background:rgba(0,0,0,.5);backdrop-filter:blur(6px);
+  border-radius:50%;display:flex;align-items:center;justify-content:center;
+  z-index:3;transition:background .2s}
+.vcard:hover .vcard-play{background:var(--teal)}
+.vcard-play svg{fill:var(--white);width:18px;height:18px;margin-left:3px;transition:fill .2s}
+.vcard:hover .vcard-play svg{fill:#0A0A0A}
+.vcard-overlay{position:absolute;inset:0;background:linear-gradient(transparent 50%,rgba(0,0,0,.8));
+  z-index:2;display:flex;align-items:flex-end;padding:14px;opacity:0;transition:opacity .3s}
+.vcard:hover .vcard-overlay{opacity:1}
+.vcard-label{font-size:11px;font-weight:500;color:var(--white)}
+.vcard iframe{position:absolute;inset:0;width:100%;height:100%;border:none;z-index:5}
+.notes-box{background:var(--s2);border:1px solid var(--border);border-radius:14px;
+  padding:28px 32px;margin-top:8px}
+.notes-box h3{font-size:13px;font-weight:600;margin-bottom:14px}
+.notes-list{list-style:none;display:flex;flex-direction:column;gap:10px}
+.notes-list li{font-size:13px;color:var(--muted);display:flex;gap:10px;line-height:1.6}
+.notes-list li::before{content:'→';color:var(--teal);font-weight:700;flex-shrink:0}
+
+/* ── REVIEWS ── */
+.reviews-overflow{overflow:hidden}
+.reviews-track{display:flex;gap:22px;transition:transform .65s cubic-bezier(.25,.46,.45,.94)}
+.rcard{min-width:calc(33.333% - 15px);background:var(--s1);border:1px solid var(--border);
+  border-radius:16px;padding:28px;flex-shrink:0;position:relative;transition:border-color .2s}
+.rcard:hover{border-color:rgba(46,207,207,.3)}
+.rcard-quote{position:absolute;top:18px;right:20px;font-size:52px;
+  color:var(--teal);opacity:.2;font-family:Georgia,serif;line-height:1}
+.rcard-avatar{width:46px;height:46px;border-radius:50%;background:var(--s2);
+  border:2px solid var(--teal);display:flex;align-items:center;justify-content:center;
+  font-size:20px;margin-bottom:14px}
+.rcard-name{font-size:13px;font-weight:700;color:var(--white);margin-bottom:2px}
+.rcard-role{font-size:11px;color:var(--teal);margin-bottom:14px}
+.rcard-text{font-size:13px;color:var(--muted);line-height:1.75}
+.rcard-stars{color:var(--teal);font-size:14px;letter-spacing:2px;margin-top:16px}
+.rdots{display:flex;gap:8px;margin-top:28px;justify-content:center}
+.rdot{width:8px;height:8px;border-radius:50%;background:var(--border);
+  border:none;cursor:pointer;padding:0;transition:all .2s}
+.rdot.on{background:var(--teal);width:24px;border-radius:4px}
+
+/* ── CONTACT ── */
+.contact-grid{display:grid;grid-template-columns:1fr 1fr;gap:60px;align-items:start}
+.contact-p{font-size:14px;color:var(--muted);line-height:1.7;margin-bottom:32px}
+.clinks{display:flex;flex-direction:column;gap:14px}
+.clink{display:flex;align-items:center;gap:14px;color:var(--muted);
+  font-size:13px;transition:color .2s}
+.clink:hover{color:var(--teal)}
+.clink-icon{width:40px;height:40px;background:var(--s2);border-radius:10px;
+  display:flex;align-items:center;justify-content:center;font-size:16px;flex-shrink:0}
+.contact-right{background:var(--s1);border:1px solid var(--border);
+  border-radius:16px;padding:32px}
+.contact-right h4{font-size:18px;font-weight:700;margin-bottom:8px}
+.contact-right p{font-size:13px;color:var(--muted);line-height:1.6;margin-bottom:24px}
+.btn-teal{display:inline-block;background:var(--teal);color:#0A0A0A;font-weight:700;
+  font-size:12px;letter-spacing:1.5px;text-transform:uppercase;padding:14px 28px;
+  border-radius:8px;transition:opacity .2s;border:none;cursor:pointer;font-family:'Inter',sans-serif}
+.btn-teal:hover{opacity:.8}
+
+/* ── FOOTER ── */
+footer{background:var(--s1);border-top:1px solid var(--border);padding:24px 60px;
+  display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px}
+.footer-logo{font-size:14px;font-weight:800;color:var(--teal);letter-spacing:3px}
+.footer-copy{font-size:11px;color:var(--muted)}
+.footer-links{display:flex;gap:22px}
+.footer-links a{font-size:11px;color:var(--muted);transition:color .2s}
+.footer-links a:hover{color:var(--teal)}
+
+/* ── CHAT WIDGET ── */
+.chat-bubble{position:fixed;bottom:28px;right:28px;z-index:300;
+  width:54px;height:54px;background:var(--teal);border-radius:50%;
+  display:flex;align-items:center;justify-content:center;cursor:pointer;
+  box-shadow:0 4px 24px rgba(46,207,207,0.35);transition:transform .2s;border:none}
+.chat-bubble:hover{transform:scale(1.08)}
+.chat-bubble svg{fill:#0A0A0A;width:22px;height:22px}
+.chat-badge{position:absolute;top:-2px;right:-2px;width:18px;height:18px;
+  background:#ff4444;border-radius:50%;font-size:10px;font-weight:700;
+  color:#fff;display:flex;align-items:center;justify-content:center}
+.chat-panel{position:fixed;bottom:96px;right:28px;z-index:300;
+  width:340px;background:var(--s1);border:1px solid var(--border);
+  border-radius:18px;overflow:hidden;box-shadow:0 8px 40px rgba(0,0,0,.6);
+  display:none;flex-direction:column;max-height:500px}
+.chat-panel.open{display:flex}
+.chat-head{background:var(--teal);padding:16px 18px;display:flex;
+  align-items:center;justify-content:space-between}
+.chat-head-info{display:flex;align-items:center;gap:10px}
+.chat-avatar{width:36px;height:36px;background:#0A0A0A;border-radius:50%;
+  display:flex;align-items:center;justify-content:center;font-size:16px}
+.chat-head-name{font-size:13px;font-weight:700;color:#0A0A0A}
+.chat-head-status{font-size:10px;color:rgba(10,10,10,.7)}
+.chat-close{background:none;border:none;cursor:pointer;font-size:18px;color:#0A0A0A;line-height:1}
+.chat-msgs{flex:1;overflow-y:auto;padding:16px;display:flex;
+  flex-direction:column;gap:12px;min-height:200px}
+.chat-msgs::-webkit-scrollbar{width:4px}
+.chat-msgs::-webkit-scrollbar-thumb{background:var(--border);border-radius:2px}
+.msg{max-width:82%;padding:10px 14px;border-radius:14px;font-size:12.5px;line-height:1.6}
+.msg.them{background:var(--s2);color:var(--white);border-bottom-left-radius:4px;align-self:flex-start}
+.msg.me{background:var(--teal);color:#0A0A0A;font-weight:500;border-bottom-right-radius:4px;align-self:flex-end}
+.msg.them a{color:var(--teal);font-weight:700;text-decoration:underline}
+.typing{display:flex;gap:4px;align-items:center;padding:10px 14px;
+  background:var(--s2);border-radius:14px;border-bottom-left-radius:4px;align-self:flex-start}
+.typing span{width:6px;height:6px;background:var(--muted);border-radius:50%;animation:bounce .8s infinite}
+.typing span:nth-child(2){animation-delay:.15s}
+.typing span:nth-child(3){animation-delay:.3s}
+@keyframes bounce{0%,60%,100%{transform:translateY(0)}30%{transform:translateY(-6px)}}
+.chat-form{padding:12px;border-top:1px solid var(--border);display:flex;gap:8px}
+.chat-input{flex:1;background:var(--s2);border:1px solid var(--border);
+  border-radius:10px;color:var(--white);font-family:'Inter',sans-serif;
+  font-size:12px;padding:10px 14px;outline:none;transition:border-color .2s;height:40px;resize:none}
+.chat-input:focus{border-color:var(--teal)}
+.chat-send{background:var(--teal);border:none;border-radius:10px;
+  width:40px;height:40px;display:flex;align-items:center;justify-content:center;
+  cursor:pointer;flex-shrink:0;transition:opacity .2s}
+.chat-send:hover{opacity:.8}
+.chat-send svg{fill:#0A0A0A;width:16px;height:16px}
+.chat-note{padding:8px 12px;font-size:10px;color:var(--muted);text-align:center;border-top:1px solid var(--border)}
+.chat-note a{color:var(--teal)}
+
+/* ── RESPONSIVE ── */
+@media(max-width:900px){
+  .nav{padding:0 24px}
+  .nav-links{display:none}
+  .wrap{padding:0 24px}
+  .about-grid,.contact-grid{grid-template-columns:1fr;gap:40px}
+  .vgrid{grid-template-columns:1fr 1fr}
+  .hero{padding:100px 24px 60px}
+  .hero-stats{flex-direction:column;max-width:100%}
+  .stat{border-right:none;border-bottom:1px solid var(--border)}
+  .stat:last-child{border-bottom:none}
+  footer{padding:20px 24px;flex-direction:column;text-align:center}
+  .rcard{min-width:100%}
+  .chat-panel{width:calc(100vw - 56px)}
+}
+@media(max-width:600px){.vgrid{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav class="nav">
+  <a class="nav-logo" href="#">FADEX</a>
+  <ul class="nav-links">
+    <li><a href="#about">About</a></li>
+    <li><a href="#work">Work</a></li>
+    <li><a href="#reviews">Reviews</a></li>
+    <li><a href="#contact">Contact</a></li>
+  </ul>
+  <a class="nav-hire" href="#contact">Hire Me</a>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-chip"><span class="hero-chip-dot"></span>Available for new projects</div>
+  <h1 class="hero-h1">FADEX<span class="teal">.</span><br><span class="dim">Video Editor</span></h1>
+  <p class="hero-sub">Making creators look as good as their content deserves. Long-form, short-form, cinematic — DaVinci Resolve.</p>
+  <div class="hero-btns">
+    <a class="btn-p" href="#work">View My Work</a>
+    <a class="btn-s" href="#contact">Get In Touch</a>
+  </div>
+  <div class="hero-stats">
+    <div class="stat"><div class="stat-n">5+</div><div class="stat-l">Years Editing</div></div>
+    <div class="stat"><div class="stat-n">50+</div><div class="stat-l">Videos Edited</div></div>
+    <div class="stat"><div class="stat-n">100%</div><div class="stat-l">Satisfaction</div></div>
+  </div>
+</section>
+
+<!-- ABOUT -->
+<section id="about">
+  <div class="wrap">
+    <div class="about-grid">
+      <div>
+        <div class="eyebrow">About</div>
+        <h2 class="section-h">Hi, I'm Fadex.<br>I edit videos.</h2>
+        <p class="about-p">I'm a <strong>21-year-old video editor from Sri Lanka</strong> with over 5 years of experience. I started with CapCut and Filmora and now work exclusively in <strong>DaVinci Resolve</strong>.</p>
+        <p class="about-p">I've worked on everything from long-form YouTube content to short-form edits and cinematic montages. Every project I focus on clean cuts, good pacing, and storytelling that keeps viewers watching.</p>
+        <div class="about-note">FYI — I am not an Advanced Motion Designer. I specialise in clean cuts, pacing and storytelling — not heavy motion graphics.</div>
+        <div class="socials">
+          <a class="social-pill" href="https://www.instagram.com/its_fadex_" target="_blank">
+            <svg viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 100 12.324 6.162 6.162 0 000-12.324zM12 16a4 4 0 110-8 4 4 0 010 8zm6.406-11.845a1.44 1.44 0 100 2.881 1.44 1.44 0 000-2.881z"/></svg>
+            Instagram
+          </a>
+          <a class="social-pill" href="https://x.com/FadexEditing" target="_blank">
+            <svg viewBox="0 0 24 24"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-4.714-6.231-5.401 6.231H2.744l7.73-8.835L1.254 2.25H8.08l4.253 5.622 5.911-5.622zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
+            @FadexEditing
+          </a>
+          <a class="social-pill" href="https://www.tiktok.com/@fadex.drfx" target="_blank">
+            <svg viewBox="0 0 24 24"><path d="M19.59 6.69a4.83 4.83 0 01-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 01-2.88 2.5 2.89 2.89 0 01-2.89-2.89 2.89 2.89 0 012.89-2.89c.28 0 .54.04.79.1V9.01a6.27 6.27 0 00-.79-.05 6.34 6.34 0 00-6.34 6.34 6.34 6.34 0 006.34 6.34 6.34 6.34 0 006.33-6.34V8.69a8.18 8.18 0 004.78 1.52V6.75a4.85 4.85 0 01-1.01-.06z"/></svg>
+            TikTok
+          </a>
+        </div>
+      </div>
+      <div class="about-cards">
+        <div class="about-card">
+          <div class="acard-icon">🎬</div>
+          <div><div class="acard-h">Long-Form Specialist</div><div class="acard-p">YouTube vlogs, talking heads, real estate & educational content up to 45 minutes</div></div>
+        </div>
+        <div class="about-card">
+          <div class="acard-icon">⚡</div>
+          <div><div class="acard-h">Short-Form Ready</div><div class="acard-p">Reels, Shorts & TikToks — fast-paced, retention-focused, built to hook</div></div>
+        </div>
+        <div class="about-card">
+          <div class="acard-icon">🎌</div>
+          <div><div class="acard-h">Cinematic & Montage</div><div class="acard-p">Music-synced anime edits and cinematic sequences — my personal passion</div></div>
+        </div>
+        <div class="about-card">
+          <div class="acard-icon">🎨</div>
+          <div><div class="acard-h">DaVinci Resolve</div><div class="acard-p">Professional colour grading, audio cleanup, clean delivery every time</div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- WORK -->
+<section id="work" class="work-bg">
+  <div class="wrap">
+    <div class="eyebrow">Work</div>
+    <h2 class="section-h" style="margin-bottom:48px">Sample Edits</h2>
+
+    <div class="vsection">
+      <div class="vsection-header">
+        <span class="vsection-tag">Long Form</span>
+        <span class="vsection-title">YouTube & Talking Head</span>
+        <span class="vsection-line"></span>
+      </div>
+      <div class="vgrid">
+        <div class="vcard" data-vid="1ncxyDizLPA">
+          <img class="vcard-thumb" src="https://img.youtube.com/vi/1ncxyDizLPA/maxresdefault.jpg" alt="" onerror="this.src='https://img.youtube.com/vi/1ncxyDizLPA/hqdefault.jpg'">
+          <div class="vcard-play"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></div>
+          <div class="vcard-overlay"><span class="vcard-label">Long Form Sample 1</span></div>
+        </div>
+        <div class="vcard" data-vid="sFQeFL_pHwk">
+          <img class="vcard-thumb" src="https://img.youtube.com/vi/sFQeFL_pHwk/maxresdefault.jpg" alt="" onerror="this.src='https://img.youtube.com/vi/sFQeFL_pHwk/hqdefault.jpg'">
+          <div class="vcard-play"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></div>
+          <div class="vcard-overlay"><span class="vcard-label">Long Form Sample 2</span></div>
+        </div>
+        <div class="vcard" data-vid="lvOJ93Iqcls">
+          <img class="vcard-thumb" src="https://img.youtube.com/vi/lvOJ93Iqcls/maxresdefault.jpg" alt="" onerror="this.src='https://img.youtube.com/vi/lvOJ93Iqcls/hqdefault.jpg'">
+          <div class="vcard-play"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></div>
+          <div class="vcard-overlay"><span class="vcard-label">Long Form Sample 3</span></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="vsection">
+      <div class="vsection-header">
+        <span class="vsection-tag">Short Form</span>
+        <span class="vsection-title">Reels, Shorts & TikToks</span>
+        <span class="vsection-line"></span>
+      </div>
+      <div class="vgrid">
+        <div class="vcard" data-vid="DPpm2N9bHA0">
+          <img class="vcard-thumb" src="https://img.youtube.com/vi/DPpm2N9bHA0/maxresdefault.jpg" alt="" onerror="this.src='https://img.youtube.com/vi/DPpm2N9bHA0/hqdefault.jpg'">
+          <div class="vcard-play"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></div>
+          <div class="vcard-overlay"><span class="vcard-label">Short Form Sample 1</span></div>
+        </div>
+        <div class="vcard" data-vid="j0l3ih4_QY4">
+          <img class="vcard-thumb" src="https://img.youtube.com/vi/j0l3ih4_QY4/maxresdefault.jpg" alt="" onerror="this.src='https://img.youtube.com/vi/j0l3ih4_QY4/hqdefault.jpg'">
+          <div class="vcard-play"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></div>
+          <div class="vcard-overlay"><span class="vcard-label">Short Form Sample 2</span></div>
+        </div>
+        <div class="vcard" data-vid="dzwZwKmanng">
+          <img class="vcard-thumb" src="https://img.youtube.com/vi/dzwZwKmanng/maxresdefault.jpg" alt="" onerror="this.src='https://img.youtube.com/vi/dzwZwKmanng/hqdefault.jpg'">
+          <div class="vcard-play"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></div>
+          <div class="vcard-overlay"><span class="vcard-label">Short Form Sample 3</span></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="vsection">
+      <div class="vsection-header">
+        <span class="vsection-tag">Montage</span>
+        <span class="vsection-title">Cinematic & Anime Edits</span>
+        <span class="vsection-line"></span>
+      </div>
+      <div class="vgrid">
+        <div class="vcard" data-vid="LDzL7JteHGo">
+          <img class="vcard-thumb" src="https://img.youtube.com/vi/LDzL7JteHGo/maxresdefault.jpg" alt="" onerror="this.src='https://img.youtube.com/vi/LDzL7JteHGo/hqdefault.jpg'">
+          <div class="vcard-play"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></div>
+          <div class="vcard-overlay"><span class="vcard-label">Montage Sample 1</span></div>
+        </div>
+        <div class="vcard" data-vid="PIVJ8qWvbx8">
+          <img class="vcard-thumb" src="https://img.youtube.com/vi/PIVJ8qWvbx8/maxresdefault.jpg" alt="" onerror="this.src='https://img.youtube.com/vi/PIVJ8qWvbx8/hqdefault.jpg'">
+          <div class="vcard-play"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></div>
+          <div class="vcard-overlay"><span class="vcard-label">Montage Sample 2</span></div>
+        </div>
+        <div class="vcard" data-vid="P-Yic87oKVA">
+          <img class="vcard-thumb" src="https://img.youtube.com/vi/P-Yic87oKVA/maxresdefault.jpg" alt="" onerror="this.src='https://img.youtube.com/vi/P-Yic87oKVA/hqdefault.jpg'">
+          <div class="vcard-play"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></div>
+          <div class="vcard-overlay"><span class="vcard-label">Montage Sample 3</span></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="notes-box">
+      <h3>📝 Notes</h3>
+      <ul class="notes-list">
+        <li>I specialise in clean, engaging edits with good pacing and retention-focused cuts — not complex motion graphics.</li>
+        <li>Prices may vary depending on complexity and turnaround time.</li>
+        <li>All payments via Wise. 50% upfront, 50% on delivery.</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- REVIEWS -->
+<section id="reviews">
+  <div class="wrap">
+    <div class="eyebrow">Reviews</div>
+    <h2 class="section-h" style="margin-bottom:40px">What Clients Say</h2>
+    <div class="reviews-overflow">
+      <div class="reviews-track" id="rt">
+        <div class="rcard">
+          <div class="rcard-quote">"</div>
+          <div class="rcard-avatar">🎬</div>
+          <div class="rcard-name">Digitalist</div>
+          <div class="rcard-role">YouTube Creator</div>
+          <div class="rcard-text">"Super talented, learns quickly and always delivered anything I needed fast. Really nice working with him, and will definitely hire again. In addition to longform, Fadex is already really good with shorts."</div>
+          <div class="rcard-stars">★★★★★</div>
+        </div>
+        <div class="rcard">
+          <div class="rcard-quote">"</div>
+          <div class="rcard-avatar">🔊</div>
+          <div class="rcard-name">Into the Chamber</div>
+          <div class="rcard-role">YouTube Creator</div>
+          <div class="rcard-text">"Big shout out to Fadex. Easily one of the most technically gifted editors in the space right now. If you're looking for frame-perfect sync, elite color grading, and content that actually converts, Fadex is the gold standard 💕"</div>
+          <div class="rcard-stars">★★★★★</div>
+        </div>
+        <div class="rcard">
+          <div class="rcard-quote">"</div>
+          <div class="rcard-avatar">🎮</div>
+          <div class="rcard-name">Levelist</div>
+          <div class="rcard-role">YouTube Creator</div>
+          <div class="rcard-stars" style="font-size:20px;margin-top:0;margin-bottom:8px">★★★★★</div>
+          <div class="rcard-text" style="color:var(--muted);font-size:12px">Verified Client</div>
+        </div>
+      </div>
+    </div>
+    <div class="rdots" id="rdots"></div>
+  </div>
+</section>
+
+<!-- CONTACT -->
+<section id="contact" style="background:var(--s1)">
+  <div class="wrap">
+    <div class="contact-grid">
+      <div>
+        <div class="eyebrow">Contact</div>
+        <h2 class="section-h">Let's Work Together</h2>
+        <p class="contact-p">Whether you're a vlogger, real estate investor, or any creator looking to level up — I'd love to help. Reach out via email or DM and I'll reply within 24 hours.</p>
+        <div class="clinks">
+          <a class="clink" href="mailto:businessfadex@gmail.com">
+            <div class="clink-icon">✉</div>businessfadex@gmail.com
+          </a>
+          <a class="clink" href="https://x.com/FadexEditing" target="_blank">
+            <div class="clink-icon">𝕏</div>@FadexEditing on X
+          </a>
+          <a class="clink" href="https://www.instagram.com/its_fadex_" target="_blank">
+            <div class="clink-icon">📷</div>Instagram DM
+          </a>
+        </div>
+      </div>
+      <div class="contact-right">
+        <h4>Ready to get started?</h4>
+        <p>Use the chat button to send me a message — I'll reply and send you a quick form to understand your channel before we begin.</p>
+        <button class="btn-teal" onclick="document.getElementById('chatBubble').click()">Open Chat →</button>
+        <p style="margin-top:14px;font-size:11px;color:var(--muted)">I reply within 24 hours · All payments via Wise</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="footer-logo">FADEX EDITING</div>
+  <div class="footer-copy">© 2026 Fadex. All rights reserved.</div>
+  <div class="footer-links">
+    <a href="#about">About</a>
+    <a href="#work">Work</a>
+    <a href="#reviews">Reviews</a>
+    <a href="mailto:businessfadex@gmail.com">Email</a>
+  </div>
+</footer>
+
+<!-- CHAT WIDGET -->
+<button class="chat-bubble" id="chatBubble" onclick="toggleChat()">
+  <svg viewBox="0 0 24 24"><path d="M20 2H4c-1.1 0-2 .9-2 2v18l4-4h14c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2z"/></svg>
+  <div class="chat-badge">1</div>
+</button>
+
+<div class="chat-panel" id="chatPanel">
+  <div class="chat-head">
+    <div class="chat-head-info">
+      <div class="chat-avatar">🎬</div>
+      <div>
+        <div class="chat-head-name">Fadex</div>
+        <div class="chat-head-status">Replies within 24hrs</div>
+      </div>
+    </div>
+    <button class="chat-close" onclick="toggleChat()">✕</button>
+  </div>
+  <div class="chat-msgs" id="chatMsgs">
+    <div class="msg them">Hey! 👋 What kind of content are you making? Drop me a message and I'll get back to you!</div>
+  </div>
+  <div class="chat-form">
+    <textarea class="chat-input" id="chatInput" placeholder="Type a message..." onkeydown="if(event.key==='Enter'&&!event.shiftKey){event.preventDefault();sendMsg()}"></textarea>
+    <button class="chat-send" onclick="sendMsg()">
+      <svg viewBox="0 0 24 24"><path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z"/></svg>
+    </button>
+  </div>
+  <div class="chat-note">Want real-time replies? <a href="https://www.instagram.com/its_fadex_" target="_blank">DM on Instagram</a></div>
+</div>
+
+<!--Start of Tawk.to Script-->
+<script type="text/javascript">
+var Tawk_API=Tawk_API||{}, Tawk_LoadStart=new Date();
+(function(){
+var s1=document.createElement("script"),s0=document.getElementsByTagName("script")[0];
+s1.async=true;
+s1.src='https://embed.tawk.to/6a4237b77f4a851d4a3fdb78/1js9aj9u8';
+s1.charset='UTF-8';
+s1.setAttribute('crossorigin','*');
+s0.parentNode.insertBefore(s1,s0);
+})();
+</script>
+<!--End of Tawk.to Script-->
+
+<script>
+// ── CHAT ──
+function toggleChat(){
+  const p=document.getElementById('chatPanel');
+  p.classList.toggle('open');
+  document.querySelector('.chat-badge').style.display='none';
+}
+let replied=false;
+async function sendMsg(){
+  const input=document.getElementById('chatInput');
+  const msgs=document.getElementById('chatMsgs');
+  const txt=input.value.trim();
+  if(!txt)return;
+  const um=document.createElement('div');
+  um.className='msg me';um.textContent=txt;
+  msgs.appendChild(um);input.value='';
+  msgs.scrollTop=msgs.scrollHeight;
+  fetch('https://formspree.io/f/mrewlbbd',{
+    method:'POST',headers:{'Content-Type':'application/json','Accept':'application/json'},
+    body:JSON.stringify({message:txt,source:'Chat Widget'})
+  });
+  const typing=document.createElement('div');
+  typing.className='typing';
+  typing.innerHTML='<span></span><span></span><span></span>';
+  msgs.appendChild(typing);msgs.scrollTop=msgs.scrollHeight;
+  setTimeout(()=>{
+    typing.remove();
+    const r=document.createElement('div');r.className='msg them';
+    if(!replied){
+      replied=true;
+      r.innerHTML='Thanks for reaching out! 🙌 I\'ll get back to you within 24hrs.<br><br>In the meantime, fill out this quick form so I can understand your channel:<br><br><a href="https://fadexediting.github.io/Client-Form" target="_blank">→ Fill out the form here</a>';
+    } else {
+      r.textContent='Message received! I\'ll reply soon 👍';
+    }
+    msgs.appendChild(r);msgs.scrollTop=msgs.scrollHeight;
+  },1500);
+}
+
+// ── VIDEO HOVER AUTOPLAY ──
+document.querySelectorAll('.vcard').forEach(card=>{
+  const vid=card.dataset.vid;let iframe=null;
+  card.addEventListener('mouseenter',()=>{
+    iframe=document.createElement('iframe');
+    iframe.src=`https://www.youtube.com/embed/${vid}?autoplay=1&mute=1&loop=1&playlist=${vid}&controls=1&modestbranding=1&rel=0`;
+    iframe.allow='autoplay;encrypted-media';iframe.frameBorder='0';iframe.allowFullscreen=true;
+    card.appendChild(iframe);
+    card.querySelector('.vcard-thumb').style.opacity='0';
+    card.querySelector('.vcard-play').style.opacity='0';
+  });
+  card.addEventListener('mouseleave',()=>{
+    if(iframe){iframe.remove();iframe=null;}
+    card.querySelector('.vcard-thumb').style.opacity='1';
+    card.querySelector('.vcard-play').style.opacity='1';
+  });
+});
+
+// ── CAROUSEL ──
+const rt=document.getElementById('rt');
+const cards=rt.querySelectorAll('.rcard');
+const dotsEl=document.getElementById('rdots');
+let cur=0,timer;
+function vis(){return window.innerWidth<700?1:window.innerWidth<1000?2:3;}
+function maxS(){return Math.max(0,cards.length-vis());}
+function makeDots(){
+  dotsEl.innerHTML='';
+  for(let i=0;i<=maxS();i++){
+    const d=document.createElement('button');
+    d.className='rdot'+(i===cur?' on':'');
+    d.onclick=()=>goTo(i);dotsEl.appendChild(d);
+  }
+}
+function goTo(n){
+  cur=Math.max(0,Math.min(n,maxS()));
+  const w=cards[0].offsetWidth+22;
+  rt.style.transform=`translateX(-${cur*w}px)`;
+  document.querySelectorAll('.rdot').forEach((d,i)=>d.className='rdot'+(i===cur?' on':''));
+}
+function startT(){timer=setInterval(()=>goTo(cur>=maxS()?0:cur+1),4000);}
+makeDots();startT();
+rt.addEventListener('mouseenter',()=>clearInterval(timer));
+rt.addEventListener('mouseleave',startT);
+window.addEventListener('resize',()=>{makeDots();goTo(0);});
+</script>
+</body>
+</html>
