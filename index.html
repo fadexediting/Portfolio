@@ -85,10 +85,14 @@ section{padding:90px 0}
 .social-pill svg{width:14px;height:14px;fill:currentColor;flex-shrink:0}
 .about-cards{display:flex;flex-direction:column;gap:14px}
 .about-card{background:rgba(15,21,23,0.55);backdrop-filter:blur(8px);border:1px solid var(--border);border-radius:14px;
-  padding:22px;display:flex;gap:16px;align-items:flex-start;transition:border-color .2s}
-.about-card:hover{border-color:rgba(46,207,207,.3)}
-.acard-icon{width:42px;height:42px;background:var(--teal-lo);border-radius:10px;
-  display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0}
+  padding:22px;display:flex;gap:16px;align-items:flex-start;transition:all .25s}
+.about-card:hover{border-color:rgba(46,207,207,.4);box-shadow:0 0 28px rgba(46,207,207,0.12)}
+.acard-icon{width:46px;height:46px;border-radius:12px;
+  background:linear-gradient(145deg, rgba(46,207,207,0.22), rgba(46,207,207,0.04));
+  border:1px solid rgba(46,207,207,0.25);
+  box-shadow:0 0 18px rgba(46,207,207,0.18), inset 0 1px 0 rgba(255,255,255,0.06);
+  display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.acard-icon svg{width:21px;height:21px;fill:var(--teal)}
 .acard-h{font-size:13px;font-weight:600;color:var(--white);margin-bottom:3px}
 .acard-p{font-size:12px;color:var(--muted);line-height:1.5}
 .work-bg{background:rgba(10,16,17,0.35)}
@@ -152,6 +156,7 @@ section{padding:90px 0}
 .clink:hover{color:var(--teal)}
 .clink-icon{width:40px;height:40px;background:var(--s2);border-radius:10px;
   display:flex;align-items:center;justify-content:center;font-size:16px;flex-shrink:0}
+.clink-icon svg{width:16px;height:16px;fill:var(--teal)}
 .contact-right{background:rgba(15,21,23,0.6);backdrop-filter:blur(8px);border:1px solid var(--border);
   border-radius:16px;padding:32px}
 .contact-right h4{font-size:18px;font-weight:700;margin-bottom:8px}
@@ -237,19 +242,19 @@ footer{background:rgba(10,16,17,0.6);border-top:1px solid var(--border);padding:
       </div>
       <div class="about-cards">
         <div class="about-card">
-          <div class="acard-icon">🎬</div>
+          <div class="acard-icon"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></div>
           <div><div class="acard-h">Long-Form Specialist</div><div class="acard-p">YouTube vlogs, talking heads, real estate and educational content up to 45 minutes</div></div>
         </div>
         <div class="about-card">
-          <div class="acard-icon">⚡</div>
+          <div class="acard-icon"><svg viewBox="0 0 24 24"><path d="M11 21h-1l1-7H7.5c-.58 0-.57-.32-.38-.66.19-.34.05-.08.07-.12C8.48 10.94 10.42 7.54 13 3h1l-1 7h3.5c.49 0 .56.33.47.51l-.07.15C12.96 17.55 11 21 11 21z"/></svg></div>
           <div><div class="acard-h">Short-Form Ready</div><div class="acard-p">Reels, Shorts and TikToks. Fast paced, retention focused, built to hook</div></div>
         </div>
         <div class="about-card">
-          <div class="acard-icon">🎌</div>
+          <div class="acard-icon"><svg viewBox="0 0 24 24"><path d="M12 2l2.4 7.2H22l-6 4.6L18.4 22 12 17.4 5.6 22 8 13.8 2 9.2h7.6z"/></svg></div>
           <div><div class="acard-h">Cinematic and Montage</div><div class="acard-p">Music synced anime edits and cinematic sequences. My personal passion</div></div>
         </div>
         <div class="about-card">
-          <div class="acard-icon">🎨</div>
+          <div class="acard-icon"><svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10c1.1 0 2-.9 2-2 0-.51-.2-.98-.52-1.32-.31-.34-.5-.8-.5-1.31 0-1.1.9-2 2-2H17c2.76 0 5-2.24 5-5 0-4.42-4.48-8-10-8zm-5.5 9C5.67 11 5 10.33 5 9.5S5.67 8 6.5 8 8 8.67 8 9.5 7.33 11 6.5 11zm3-4C8.67 7 8 6.33 8 5.5S8.67 4 9.5 4s1.5.67 1.5 1.5S10.33 7 9.5 7zm5 0c-.83 0-1.5-.67-1.5-1.5S13.67 4 14.5 4s1.5.67 1.5 1.5S15.33 7 14.5 7zm3 4c-.83 0-1.5-.67-1.5-1.5S16.67 8 17.5 8s1.5.67 1.5 1.5-.67 1.5-1.5 1.5z"/></svg></div>
           <div><div class="acard-h">DaVinci Resolve</div><div class="acard-p">Professional colour grading, audio cleanup, clean delivery every time</div></div>
         </div>
       </div>
@@ -389,17 +394,17 @@ footer{background:rgba(10,16,17,0.6);border-top:1px solid var(--border);padding:
             <div class="clink-icon">✉</div>businessfadex@gmail.com
           </a>
           <a class="clink" href="https://x.com/FadexEditing" target="_blank">
-            <div class="clink-icon">𝕏</div>@FadexEditing on X
+            <div class="clink-icon"><svg viewBox="0 0 24 24"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-4.714-6.231-5.401 6.231H2.744l7.73-8.835L1.254 2.25H8.08l4.253 5.622 5.911-5.622zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg></div>@FadexEditing on X
           </a>
           <a class="clink" href="https://www.instagram.com/its_fadex_" target="_blank">
-            <div class="clink-icon">📷</div>Instagram DM
+            <div class="clink-icon"><svg viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 100 12.324 6.162 6.162 0 000-12.324zM12 16a4 4 0 110-8 4 4 0 010 8zm6.406-11.845a1.44 1.44 0 100 2.881 1.44 1.44 0 000-2.881z"/></svg></div>Instagram DM
           </a>
         </div>
       </div>
       <div class="contact-right">
         <h4>Ready to get started?</h4>
         <p>Use the chat button in the corner to send me a message. I'll reply and send you a quick form to understand your channel before we begin.</p>
-        <a class="btn-teal" href="mailto:businessfadex@gmail.com">Email Me</a>
+        <button class="btn-teal" id="openChatBtn">Open Chat</button>
         <p style="margin-top:14px;font-size:11px;color:var(--muted)">I reply within 24 hours. All payments via Wise.</p>
       </div>
     </div>
@@ -415,30 +420,18 @@ footer{background:rgba(10,16,17,0.6);border-top:1px solid var(--border);padding:
     <a href="mailto:businessfadex@gmail.com">Email</a>
   </div>
 </footer>
-<script type="text/javascript">
-var Tawk_API=Tawk_API||{}, Tawk_LoadStart=new Date();
-Tawk_API.customStyle = {
-  zIndex: 150
-};
-Tawk_API.onLoad = function(){
-  try {
-    var styleTag = document.createElement('style');
-    styleTag.innerHTML = `
-      iframe[title="chat widget"] { color-scheme: dark; }
-    `;
-    document.head.appendChild(styleTag);
-  } catch(e) {}
-};
-(function(){
-var s1=document.createElement("script"),s0=document.getElementsByTagName("script")[0];
-s1.async=true;
-s1.src='https://embed.tawk.to/6a4237b77f4a851d4a3fdb78/1js9aj9u8';
-s1.charset='UTF-8';
-s1.setAttribute('crossorigin','*');
-s0.parentNode.insertBefore(s1,s0);
-})();
+
+<script type="text/javascript">window.$crisp=[];window.CRISP_WEBSITE_ID="8f20b778-56b5-491c-a057-d8b2ad3bb679";
+(function(){var d=document;var s=d.createElement("script");s.src="https://client.crisp.chat/l.js";s.async=1;d.getElementsByTagName("head")[0].appendChild(s);})();
 </script>
+
 <script>
+document.getElementById('openChatBtn').addEventListener('click', function(){
+  if(window.$crisp){
+    window.$crisp.push(['do','chat:open']);
+  }
+});
+
 document.querySelectorAll('.vcard').forEach(card=>{
   const vid=card.dataset.vid;let iframe=null;
   card.addEventListener('mouseenter',()=>{
